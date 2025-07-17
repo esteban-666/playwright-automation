@@ -35,6 +35,18 @@ jobs:
           playwright-report/
         retention-days: 30
 
+    # Upload Playwright screenshots as an artifact for failed tests
+    - name: Upload Playwright screenshots
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-screenshots
+        path: |
+          test-results/
+          screenshots/
+        retention-days: 30
+
 # Note for users:
 # - When running locally, use 'npx playwright show-report' to view the HTML report in your browser.
 # - On GitHub Actions, download the 'playwright-report' artifact and open 'index.html' locally.
+# - Download the 'playwright-screenshots' artifact to view screenshots from failed tests.

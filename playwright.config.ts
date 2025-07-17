@@ -25,7 +25,7 @@ const config: PlaywrightTestConfig = {
   ],
   use: {
     headless: true,
-    screenshot: 'on',
+    screenshot: 'only-on-failure',
     trace: 'on',
   },
 };
