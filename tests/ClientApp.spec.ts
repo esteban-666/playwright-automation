@@ -24,22 +24,26 @@ test('@Webst Client App login', async ({ page }) => {
 
   // Get all product titles and log them
   const titles = await page.locator('.card-body b').allTextContents();
-  console.log(titles);
+  console.log('Product titles:', titles);
 
   // Find and add the desired product to the cart
   const count = await products.count();
+  console.log('Adding product to cart...');
   for (let i = 0; i < count; ++i) {
     if ((await products.nth(i).locator('b').textContent()) === productName) {
       await products.nth(i).locator('text= Add To Cart').click();
+      console.log(`Clicked Add To Cart for: ${productName}`);
       break;
     }
   }
 
   // Go to the cart page
   await page.locator("[routerlink*='cart']").click();
+  console.log('Navigated to cart page. Waiting for cart item...');
 
   // Wait for the cart to load and assert visibility (robust for CI)
   await expect(page.locator('div li').first()).toBeVisible({ timeout: 30000 });
+  console.log('Cart item appeared!');
 
   // Verify the product is displayed in the cart
   const bool = await page.locator("h3:has-text('zara coat 3')").isVisible();
