@@ -30,7 +30,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-report
+        name: playwright-report-${{ github.run_number }}
         path: |
           playwright-report/
         retention-days: 30
@@ -40,7 +40,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-screenshots
+        name: playwright-screenshots-${{ github.run_number }}
         path: |
           test-results/
           screenshots/

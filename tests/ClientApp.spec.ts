@@ -21,6 +21,7 @@ test('@Webst Client App login', async ({ page }) => {
 
   // Wait for the product cards to be visible
   await page.locator('.card-body b').first().waitFor();
+  await page.waitForTimeout(3000);
 
   // Get all product titles and log them
   const titles = await page.locator('.card-body b').allTextContents();
@@ -44,6 +45,7 @@ test('@Webst Client App login', async ({ page }) => {
   // Wait for the cart to load and assert visibility (robust for CI)
   await expect(page.locator('div li').first()).toBeVisible({ timeout: 30000 });
   console.log('Cart item appeared!');
+  await page.waitForTimeout(3000);
 
   // Verify the product is displayed in the cart
   const bool = await page.locator("h3:has-text('zara coat 3')").isVisible();
