@@ -40,6 +40,7 @@ test('@Webst Client App login', async ({ page }) => {
   }
 
   // Go to the cart page
+  await page.waitForTimeout(3000);
   await page.locator("[routerlink*='cart']").click();
   console.log('Navigated to cart page. Waiting for cart item...');
 
