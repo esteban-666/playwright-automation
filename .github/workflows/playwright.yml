@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Playwright Test for ClientApp
 on:
   workflow_dispatch:
 
