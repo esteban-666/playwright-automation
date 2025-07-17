@@ -15,13 +15,13 @@ test('@Webst Client App login', async ({ page }) => {
 
   // Click the login button
   await page.locator("[value='Login']").click();
+  await page.waitForTimeout(3000);
 
   // Wait for the page to finish loading
   await page.waitForLoadState('networkidle');
 
   // Wait for the product cards to be visible
   await page.locator('.card-body b').first().waitFor();
-  await page.waitForTimeout(3000);
 
   // Get all product titles and log them
   const titles = await page.locator('.card-body b').allTextContents();
@@ -30,7 +30,7 @@ test('@Webst Client App login', async ({ page }) => {
   // Find and add the desired product to the cart
   const count = await products.count();
   console.log('Adding product to cart...');
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(7000);
   for (let i = 0; i < count; ++i) {
     if ((await products.nth(i).locator('b').textContent()) === productName) {
       await products.nth(i).locator('text= Add To Cart').click();
