@@ -17,13 +17,10 @@ test('@Webst Client App login', async ({ page }) => {
   await page.goto('https://rahulshettyacademy.com/client');
 
   // Fill in login credentials
-  await slowDown(page);
   await page.locator('#userEmail').fill(email);
-  await slowDown(page);
   await page.locator('#userPassword').fill('Iamking@000');
 
   // Click the login button
-  await slowDown(page);
   await page.locator("[value='Login']").click();
 
   // Wait for the page to finish loading
