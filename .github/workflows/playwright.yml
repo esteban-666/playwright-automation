@@ -6,6 +6,7 @@ on:
 
 jobs:
   test:
+    name: E2E Client App Order Flow - Shard ${{ matrix.shard }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
