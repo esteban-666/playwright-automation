@@ -45,6 +45,7 @@ test('@Webst Client App login', async ({ page }) => {
   for (let i = 0; i < count; ++i) {
     if ((await products.nth(i).locator('b').textContent()) === productName) {
       await slowDown(page);
+      await page.waitForTimeout(4000);
       await products.nth(i).locator('text= Add To Cart').click();
       console.log(`Clicked Add To Cart for: ${productName}`);
       break;
