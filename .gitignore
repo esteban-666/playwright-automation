@@ -1,3 +1,23 @@
-node_modules/
-test-results/
+# Playwright test output
 playwright-report/
+test-results/
+allure-results/
+allure-report/
+state.json
+
+# VSCode and IDE settings
+.vscode/
+.idea/
+
+# Node modules and logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage reports (if you use coverage)
+coverage/
