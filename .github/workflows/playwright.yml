@@ -1,6 +1,8 @@
 name: Playwright Test for ClientApp
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 13 * * *'
 
 jobs:
   test:
