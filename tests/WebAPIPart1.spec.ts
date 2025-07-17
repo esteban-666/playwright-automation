@@ -37,21 +37,21 @@ test('@API Place the order', async ({ page, request }) => {
   console.log('[LOGIN API] Status:', loginResponse.status());
   console.log('[LOGIN API] Body:', loginResponseBody);
 
-  // --- Step 2: Retrieve order details from API ---
-  const orderIdToCheck = '687753e46eb3777530a05863';
-  const getOrderResponse = await request.get(
-    `https://rahulshettyacademy.com/api/ecom/order/get-orders-details?id=${orderIdToCheck}`,
-    {
-      headers: {
-        'Accept': 'application/json, text/plain, */*',
-        'Authorization': dynamicToken,
-      }
-    }
-  );
-  const getOrderBody = await getOrderResponse.json();
-  console.log('[GET ORDER API] Status:', getOrderResponse.status());
-  console.log('[GET ORDER API] Body:', getOrderBody);
-  const apiOrderId = getOrderBody.data?._id;
+  // --- Step 2: Create an order dynamically using the API ---
+  const createOrderResponse = await request.post('https://rahulshettyacademy.com/api/ecom/order/create-order', {
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'Authorization': dynamicToken,
+    },
+    data: {
+      orders: [{ country: 'India', productOrderedId: '67a8dde5c0d3e6622a297cc8' }],
+    },
+  });
+  const createOrderBody = await createOrderResponse.json();
+  console.log('[CREATE ORDER API] Status:', createOrderResponse.status());
+  console.log('[CREATE ORDER API] Body:', createOrderBody);
+  const apiOrderId = createOrderBody.orders && Array.isArray(createOrderBody.orders) && createOrderBody.orders.length > 0 ? createOrderBody.orders[0] : null;
 
   // --- Step 3: Inject the token into localStorage before the page loads ---
   page.addInitScript((value) => {
@@ -61,7 +61,11 @@ test('@API Place the order', async ({ page, request }) => {
   // --- Step 4: Go to the client app and navigate to orders page ---
   await page.goto('https://rahulshettyacademy.com/client');
   await page.locator('button[routerlink*="myorders"]').click();
-  await page.waitForTimeout(3000); // wait for 3 seconds
+
+  // Reload the page and wait to ensure the UI fetches the latest orders
+  await page.reload();
+  await page.waitForTimeout(2000); // wait for 2 seconds
+
   await page.locator('tbody').waitFor();
 
   // --- Step 5: Find and click the order in the UI that matches the API orderId ---
