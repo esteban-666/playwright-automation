@@ -1,5 +1,10 @@
 import { test, expect, Page } from '@playwright/test';
 
+// Helper to slow down actions
+async function slowDown(page: Page) {
+  await page.waitForTimeout(4000);
+}
+
 test('@Webst Client App login', async ({ page }) => {
   // Define test data
   const email = 'anshika@gmail.com';
@@ -21,20 +26,43 @@ test('@Webst Client App login', async ({ page }) => {
   await page.waitForLoadState('networkidle');
 
   // Wait for the product cards to be visible
+  await slowDown(page);
   await page.locator('.card-body b').first().waitFor();
 
   // Get all product titles and log them
+  await slowDown(page);
   const titles = await page.locator('.card-body b').allTextContents();
   console.log('Product titles:', titles);
 
   // Find and add the desired product to the cart
   const count = await products.count();
   console.log('Adding product to cart...');
-  await page.waitForTimeout(7000);
   for (let i = 0; i < count; ++i) {
-    if ((await products.nth(i).locator('b').textContent()) === productName) {
-      await products.nth(i).locator('text= Add To Cart').click();
-      console.log(`Clicked Add To Cart for: ${productName}`);
+    const productTitle = await products.nth(i).locator('b').textContent();
+    if (productTitle === productName) {
+      const addToCartBtn = products.nth(i).locator('text= Add To Cart');
+      // Wait for the button to be visible and enabled
+      try {
+        await expect(addToCartBtn).toBeVisible({ timeout: 20000 });
+        await expect(addToCartBtn).toBeEnabled({ timeout: 20000 });
+        console.log(`Button for '${productTitle}' is visible and enabled.`);
+        await addToCartBtn.click();
+        console.log(`Clicked Add To Cart for: ${productName}`);
+      } catch (e) {
+        // Log button state and check for overlays/modals
+        const isVisible = await addToCartBtn.isVisible();
+        const isEnabled = await addToCartBtn.isEnabled();
+        console.log(`Button for '${productTitle}' visible:`, isVisible);
+        console.log(`Button for '${productTitle}' enabled:`, isEnabled);
+        // Log overlays or modals if present
+        const overlays = await page.locator('[class*=modal], [class*=overlay], .modal, .overlay').allTextContents();
+        if (overlays.length > 0) {
+          console.log('Detected overlays/modals:', overlays);
+        } else {
+          console.log('No overlays/modals detected.');
+        }
+        throw e;
+      }
       break;
     }
   }
