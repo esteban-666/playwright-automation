@@ -30,6 +30,7 @@ test('@Webst Client App login', async ({ page }) => {
   // Find and add the desired product to the cart
   const count = await products.count();
   console.log('Adding product to cart...');
+  await page.waitForTimeout(3000);
   for (let i = 0; i < count; ++i) {
     if ((await products.nth(i).locator('b').textContent()) === productName) {
       await products.nth(i).locator('text= Add To Cart').click();
