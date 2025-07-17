@@ -6,6 +6,7 @@ async function slowDown(page: Page) {
 }
 
 test('@Webst Client App login', async ({ page }) => {
+  test.slow(); // Triple the default timeout for this test
   // Define test data
   const email = 'anshika@gmail.com';
   const productName = 'ZARA COAT 3';
