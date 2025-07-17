@@ -9,14 +9,6 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        browser: [chromium, firefox, webkit]
-        shardIndex: [1, 2, 3, 4]
-        shardTotal: [4]
-        # shardIndex: [1, 2, 3, 4, 5, 6, 7, 8]
-        # shardTotal: [8]
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -33,68 +25,19 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
       
-    - name: Run Playwright tests
-      run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --project=${{ matrix.browser }}
-      env:
-        SHARD_INDEX: ${{ matrix.shardIndex }}
-        TOTAL_SHARDS: ${{ matrix.shardTotal }}
+    - name: Run Playwright tests (Chromium only)
+      run: npx playwright test --project=chromium
       
-    - name: Upload test results
+    # Upload the HTML report as an artifact for download
+    - name: Upload Playwright HTML report
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-report-${{ matrix.browser }}-${{ matrix.shardIndex }}
+        name: playwright-report
         path: |
           playwright-report/
-          test-results/
-          allure-results/
         retention-days: 30
 
-  report:
-    needs: test
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Download all test results
-      uses: actions/download-artifact@v4
-      with:
-        path: playwright-report/
-        
-    - name: Generate HTML report
-      run: npx playwright show-report
-      
-    - name: Upload HTML report
-      uses: actions/upload-artifact@v4
-      with:
-        name: playwright-html-report
-        path: playwright-report/
-        retention-days: 30
-
-  notify:
-    needs: [test, report]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-    - name: Notify on failure
-      if: failure()
-      run: |
-        echo "❌ Playwright tests failed!"
-        echo "Check the test results in the artifacts above."
-        
-    - name: Notify on success
-      if: success()
-      run: |
-        echo "✅ All Playwright tests passed!"
-        echo "Test results available in the artifacts above."
+# Note for users:
+# - When running locally, use 'npx playwright show-report' to view the HTML report in your browser.
+# - On GitHub Actions, download the 'playwright-report' artifact and open 'index.html' locally.
