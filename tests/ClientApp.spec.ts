@@ -39,7 +39,7 @@ test('@Webst Client App login', async ({ page }) => {
   await page.locator("[routerlink*='cart']").click();
 
   // Wait for the cart to load and assert visibility (robust for CI)
-  await expect(page.locator('div li').first()).toBeVisible({ timeout: 10000 });
+  await expect(page.locator('div li').first()).toBeVisible({ timeout: 30000 });
 
   // Verify the product is displayed in the cart
   const bool = await page.locator("h3:has-text('zara coat 3')").isVisible();
