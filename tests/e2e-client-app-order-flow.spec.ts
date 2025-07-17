@@ -113,7 +113,6 @@ test('@Webst Client App login', async ({ page }) => {
   await page.locator('button[routerlink*="myorders"]').click();
 
   // Wait for the orders table to load
-  await slowDown(page);
   await page.locator('tbody').waitFor();
 
   // Find the order in the orders table and view its details
@@ -128,7 +127,6 @@ test('@Webst Client App login', async ({ page }) => {
   }
 
   // Verify the order ID in the details matches the original order ID
-  await slowDown(page);
   const orderIdDetails = await page.locator('.col-text').textContent();
   expect(orderId && orderIdDetails && orderId.includes(orderIdDetails)).toBeTruthy();
 }); 
