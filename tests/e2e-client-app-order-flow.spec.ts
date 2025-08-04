@@ -1,9 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 
-// Helper to slow down actions
-async function slowDown(page: Page) {
-  await page.waitForTimeout(4000);
-}
+
 
 test('@Webst Client App login', async ({ page }) => {
   // Define test data
@@ -26,11 +23,9 @@ test('@Webst Client App login', async ({ page }) => {
   await page.waitForLoadState('networkidle');
 
   // Wait for the product cards to be visible
-  await slowDown(page);
   await page.locator('.card-body b').first().waitFor();
 
   // Get all product titles and log them
-  await slowDown(page);
   const titles = await page.locator('.card-body b').allTextContents();
   console.log('Product titles:', titles);
 
@@ -68,15 +63,13 @@ test('@Webst Client App login', async ({ page }) => {
   }
 
   // Go to the cart page
-  await page.waitForTimeout(3000);
   await page.locator("[routerlink*='cart']").click();
-  await page.waitForTimeout(5000);
+  await page.waitForLoadState('networkidle');
   console.log('Navigated to cart page. Waiting for cart item...');
 
   // Wait for the cart to load and assert visibility (robust for CI)
   await expect(page.locator('div li').first()).toBeVisible({ timeout: 30000 });
   console.log('Cart item appeared!');
-  await page.waitForTimeout(3000);
 
   // Verify the product is displayed in the cart
   const bool = await page.locator("h3:has-text('zara coat 3')").isVisible();

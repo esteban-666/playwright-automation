@@ -1,12 +1,13 @@
 import { PlaywrightTestConfig, devices } from '@playwright/test';
+import { config as envConfig } from './config/environment';
 
 const config: PlaywrightTestConfig = {
   testDir: './tests',
-  retries: 1,
-  timeout: 60 * 1000,
+  retries: envConfig.retries,
+  timeout: envConfig.timeouts.navigation,
   workers: 3, // Optimized worker count for better performance
   expect: {
-    timeout: 10000
+    timeout: envConfig.timeouts.element
   },
   reporter: 'html',
   /* Define projects for major browsers */
