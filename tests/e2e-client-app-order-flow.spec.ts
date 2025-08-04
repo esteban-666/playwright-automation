@@ -7,7 +7,7 @@ async function slowDown(page: Page) {
 
 test('@Webst Client App login', async ({ page }) => {
   // Define test data
-  const email = 'anshika@gmail.com';
+  const email = 'rahulshetty@gmail.com';
   const productName = 'ZARA COAT 3';
   const products = page.locator('.card-body');
 

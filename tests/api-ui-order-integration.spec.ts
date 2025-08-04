@@ -2,7 +2,7 @@ import { test, expect, request, APIRequestContext, Page } from '@playwright/test
 import { APiUtils } from '../utils/APiUtils';
 
 // Define login and order payloads
-const loginPayLoad = { userEmail: 'anshika@gmail.com', userPassword: 'Iamking@000' };
+const loginPayLoad = { userEmail: 'rahulshetty@gmail.com', userPassword: 'Iamking@000' };
 const orderPayLoad = { orders: [{ country: 'Cuba', productOrderedId: '687752eb6eb3777530a0555c' }] };
 
 // Store the response with token and orderId
@@ -28,8 +28,8 @@ test('@API Place the order', async ({ page, request }) => {
       'Content-Type': 'application/json',
     },
     data: {
-      userEmail: 'anshika@gmail.com',
-      userPassword: 'Iamking@000',
+          userEmail: 'rahulshetty@gmail.com',
+    userPassword: 'Iamking@000',
     },
   });
   const loginResponseBody = await loginResponse.json();

@@ -5,7 +5,7 @@ test('@QW Security test request intercept', async ({ page }) => {
   await page.goto('https://rahulshettyacademy.com/client');
 
   // Fill in login credentials
-  await page.locator('#userEmail').fill('anshika@gmail.com');
+  await page.locator('#userEmail').fill('rahulshetty@gmail.com');
   await page.locator('#userPassword').fill('Iamking@000');
 
   // Click the login button

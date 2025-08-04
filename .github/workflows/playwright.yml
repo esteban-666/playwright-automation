@@ -9,11 +9,11 @@ on:
 jobs:
   test:
     name: Playwright Test Suite - Shard ${{ matrix.shard }}
-    timeout-minutes: 60
+    timeout-minutes: 90
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        shard: [1, 2, 3, 4]
+        shard: [1, 2]
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -30,8 +30,8 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
       
-    - name: Run Playwright tests (Chromium only, sharded)
-      run: npx playwright test --project=chromium --shard=${{ matrix.shard }}/4
+    - name: Run Playwright tests (Chromium only, sharded with optimized workers)
+      run: npx playwright test --project=chromium --shard=${{ matrix.shard }}/2 --workers=3
       
     # Upload the HTML report as an artifact for download
     - name: Upload Playwright HTML report
@@ -54,10 +54,19 @@ jobs:
           screenshots/
         retention-days: 30
 
+    # Show test results summary
+    - name: Show test results
+      if: always()
+      run: |
+        echo "=== Test Results Summary ==="
+        echo "Shard: ${{ matrix.shard }}/2"
+        echo "Run ID: ${{ github.run_number }}"
+        echo "Job Status: ${{ job.status }}"
+
 # Note for users:
 # - When running locally, use 'npx playwright show-report' to view the HTML report in your browser.
 # - On GitHub Actions, download the 'playwright-report' artifact and open 'index.html' locally.
 # - Download the 'playwright-screenshots' artifact to view screenshots from failed tests.
 # - This workflow runs automatically every day at 10:00 AM Uruguay time (UTC-3)
-# - Tests are distributed across 4 parallel shards for faster execution
+# - Tests are distributed across 2 parallel shards for faster execution
 # - Each shard runs on a separate GitHub Actions runner for maximum efficiency

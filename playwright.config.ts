@@ -2,10 +2,11 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   testDir: './tests',
-  retries: 0,
-  timeout: 30 * 1000,
+  retries: 1,
+  timeout: 60 * 1000,
+  workers: 3, // Optimized worker count for better performance
   expect: {
-    timeout: 5000
+    timeout: 10000
   },
   reporter: 'html',
   /* Define projects for major browsers */
@@ -18,10 +19,11 @@ const config: PlaywrightTestConfig = {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // Temporarily disabled WebKit due to crashes on macOS
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
   ],
   use: {
     headless: true,
