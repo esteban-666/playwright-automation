@@ -5,6 +5,27 @@ allure-results/
 allure-report/
 state.json
 
+# Screenshots and test artifacts
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.webp
+screenshot*.png
+partialScreenshot.png
+debug-screenshot.png
+success-login-*.png
+
+# Test artifacts and traces
+*.zip
+*.trace
+*.har
+*.log
+test-results-*/
+playwright-report-*/
+
 # VSCode and IDE settings
 .vscode/
 .idea/
