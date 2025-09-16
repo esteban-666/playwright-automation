@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Valid Contact Form</title>
+</head>
+<body>
+    <h1>Contact Us</h1>
+    
+    <form method="post" action="/submit-contact">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" placeholder="Your first name">
+        
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" placeholder="Your last name">
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Your email">
+        
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" placeholder="Your phone">
+        
+        <input type="hidden" name="csrf_token" value="abc123">
+        
+        <input type="submit" value="Send">
+    </form>
+</body>
+</html>
